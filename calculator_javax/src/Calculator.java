@@ -39,7 +39,7 @@ public class Calculator {
     Calculator() {
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
@@ -92,7 +92,10 @@ public class Calculator {
                                 switch(operator) {
                                     case "+" -> displayLabel.setText(removeZeroDecimal(numA + numB));
                                     case "-" -> displayLabel.setText(removeZeroDecimal(numA - numB));
+                                    case "×" -> displayLabel.setText(removeZeroDecimal(numA * numB));
+                                    case "÷" -> displayLabel.setText(removeZeroDecimal(numA / numB));
                                 }
+                                clearAll();
                             }
                         }
                         else if("+-×÷".contains(buttonValue)) {
@@ -136,9 +139,12 @@ public class Calculator {
                                 displayLabel.setText(displayLabel.getText().concat(buttonValue));
                             }
                         }
+                        else if("√".contains(buttonValue)) {
+                            double displayNum = Double.parseDouble(displayLabel.getText());
+                            displayNum = Math.sqrt(displayNum);
+                            displayLabel.setText(removeZeroDecimal(displayNum));
+                        }
                     }
-
-
                 }
             });
             frame.setVisible(true);
@@ -157,6 +163,4 @@ public class Calculator {
         }
         return Double.toString(numDisplay);
     }
-
-
 }
