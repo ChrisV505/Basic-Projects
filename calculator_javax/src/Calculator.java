@@ -21,6 +21,11 @@ public class Calculator {
     JPanel displayPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
 
+    //A+B, A-B, A*B, A/B
+    String A = "0";
+    String operator = null;
+    String B = null;
+
     String[] buttonValues = {
         "AC", "+/-", "%", "÷", 
         "7", "8", "9", "×", 
@@ -32,7 +37,6 @@ public class Calculator {
     String[] topSymbols = {"AC", "+/-", "%"};
 
     Calculator() {
-        frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -79,14 +83,50 @@ public class Calculator {
                     JButton button = (JButton) e.getSource();
                     String buttonValue = button.getText();
                     if(Arrays.asList(rightSymbols).contains(buttonValue)) {
+                        if(buttonValue == "=") {
+                            if(A != null) {
+                                B = displayLabel.getText();
+                                double numA = Double.parseDouble(A);
+                                double numB = Double.parseDouble(B);
 
+                                switch(operator) {
+                                    case "+" -> displayLabel.setText(removeZeroDecimal(numA + numB));
+                                    case "-" -> displayLabel.setText(removeZeroDecimal(numA - numB));
+                                }
+                            }
+                        }
+                        else if("+-×÷".contains(buttonValue)) {
+                            if(operator == null) {
+                                A = displayLabel.getText();
+                                displayLabel.setText("0");
+                                B = "0";
+                            }
+                            operator = buttonValue;
+                        }
                     }
                     else if(Arrays.asList(topSymbols).contains(buttonValue)) {
+                        switch(buttonValue) {
+                            case "AC":
+                                clearAll();
+                                displayLabel.setText("0");
+                            break;
+                            case "+/-":
+                                double numDisplay = Double.parseDouble(displayLabel.getText());
+                                numDisplay *= -1;
+                                displayLabel.setText(removeZeroDecimal(numDisplay));
+                            break;
+                            case "%":
+                                double numPerctg = Double.parseDouble(displayLabel.getText());
+                                numPerctg /= 100;
+                                displayLabel.setText(removeZeroDecimal(numPerctg));
+                            break;
+                        }
+
 
                     } else { //digits or .                        
                         if(buttonValue == ".") {
                             if(!displayLabel.getText().contains(buttonValue)) {
-                                displayLabel.setText(buttonValue);
+                                displayLabel.setText(displayLabel.getText().concat(buttonValue));
                             }
                         } 
                         else if("0123456789".contains(buttonValue)) {
@@ -101,13 +141,21 @@ public class Calculator {
 
                 }
             });
-
+            frame.setVisible(true);
         }
+    }
 
+    void clearAll() {
+        A = "0";
+        operator = null;
+        B = null;
+    }
 
-
-        
-
+    String removeZeroDecimal(double numDisplay) {
+        if(numDisplay % 1 == 0) {
+            return Integer.toString((int) numDisplay);
+        }
+        return Double.toString(numDisplay);
     }
 
 
