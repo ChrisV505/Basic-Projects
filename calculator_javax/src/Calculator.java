@@ -10,6 +10,11 @@ public class Calculator {
     int boardWidth = 360;
     int boardHeight = 540;
 
+    Color customThistle = new Color(224, 187, 228);
+    Color customLavenderPurple = new Color(149, 125, 173);
+    Color customPastelViolet = new Color(210, 145, 188);
+    Color customCottonCandy = new Color(254, 200, 216);
+
     JFrame frame = new JFrame("Calculator");
 
     Calculator() {
