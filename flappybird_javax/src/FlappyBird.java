@@ -5,8 +5,14 @@ import java.util.Random;
 import javax.swing.*;
 
 public class FlappyBird extends JPanel implements ActionListener, KeyListener {
-    int boardWidth = 360;
-    int boardHeight = 640;
+    final int boardWidth = 360;
+    final int boardHeight = 640;
+    ArrayList<Pipe> pipes;
+    Random random = new Random();
+
+    //timers
+    Timer gameLoop;
+    Timer placePipesTimer;
 
     //Images
     Image backgroundImg;
@@ -17,40 +23,14 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     //Bird
     int birdX = boardWidth/8;
     int birdY = boardHeight/2;
-    int birdWidth = 34;
-    int birdHeight = 24;
-
-    class Bird {
-        int x = birdX;
-        int y = birdY;
-        int width = birdWidth;
-        int height = birdHeight;
-        Image img;
-
-        Bird(Image img) {
-            this.img = img;
-        }
-    }
+    final int birdWidth = 34;
+    final int birdHeight = 24;
 
     //pipes
     int pipeX = boardWidth;
     int pipeY = 0;
-    int pipeWidth = 64; //scaled by 1/6
-    int pipeHeight = 512;
-
-    class Pipe {
-        int x = pipeX;
-        int y = pipeY;
-        int width = pipeWidth;
-        int height = pipeHeight;
-        Image img;
-        boolean passed = false;
-
-        Pipe(Image img) {
-            this.img = img;
-        }
-    }
-
+    final int pipeWidth = 64; //scaled by 1/6
+    final int pipeHeight = 512;
 
     //game logic
     Bird bird;
@@ -58,61 +38,46 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int velocityY = 0; //move bird up/down speed
     int gravity = 1;
 
-    ArrayList<Pipe> pipes;
-    Random random = new Random();
-
-    Timer gameLoop;
-    Timer placePipesTimer;
     boolean gameOver = false;
     double score = 0;
 
     FlappyBird() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
-        //setBackground(Color.blue);
         setFocusable(true);
         addKeyListener(this);
 
         //load images
-        backgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
-        birdImg = new ImageIcon(getClass().getResource("./flappybird.png")).getImage();
-        topPipeImg = new ImageIcon(getClass().getResource("./toppipe.png")).getImage();
-        bottomPipeImg = new ImageIcon(getClass().getResource("./bottompipe.png")).getImage();
+        backgroundImg = new ImageIcon(getClass().getResource("images/flappybirdbg.png")).getImage();
+        birdImg = new ImageIcon(getClass().getResource("images/flappybird.png")).getImage();
+        topPipeImg = new ImageIcon(getClass().getResource("images/toppipe.png")).getImage();
+        bottomPipeImg = new ImageIcon(getClass().getResource("images/bottompipe.png")).getImage();
 
         //bird
-        bird = new Bird(birdImg);
+        bird = new Bird(birdX, birdY, birdWidth, birdHeight, birdImg);
         pipes = new ArrayList<>();
 
         //place pipes timer
-        placePipesTimer = new Timer(1500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                placePipes();
-            }
-        });
-
+        placePipesTimer = new Timer(1500, _ -> placePipes()); //'_' used to prevent unused warning
         placePipesTimer.start();
 
         //game timer
         gameLoop = new Timer(1000/60, this); //1000/60 = 16.6;
         gameLoop.start();
-
     }
 
     public void placePipes() {
         //(0 - 1) * pipeHeight/2 -> (0 - 256)
         //128
         //0 - 128 - (0-256) --> pipeHeight/4 -> 3/4 pipeHeight
-
         int randomPipeY = (int) (pipeY - pipeHeight/4 - Math.random() * (pipeHeight/2));
         int openingSpace = boardHeight/4;
 
-
-        Pipe topPipe = new Pipe(topPipeImg);
-        topPipe.y = randomPipeY;
+        Pipe topPipe = new Pipe(pipeX, pipeY, pipeWidth, pipeHeight, topPipeImg);
+        topPipe.setY(randomPipeY);;
         pipes.add(topPipe);
 
-        Pipe bottomPipe = new Pipe(bottomPipeImg);
-        bottomPipe.y = topPipe.y + pipeHeight + openingSpace;
+        Pipe bottomPipe = new Pipe(pipeX, pipeY, pipeWidth, pipeHeight, bottomPipeImg);
+        bottomPipe.setY(topPipe.getY() + pipeHeight + openingSpace);
         pipes.add(bottomPipe);
     }
 
@@ -128,10 +93,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         //bird
         g.drawImage(bird.img, bird.x, bird.y, bird.width, bird.height, null);
 
-        //pipes
+        // 
         for(int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
-            g.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null);
+            g.drawImage(pipe.getImg(), pipe.getX(), pipe.getY(), pipe.getWidth(), pipe.getHeight(), null);
         }
 
         //score
@@ -153,10 +118,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         //pipes
         for(int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
-            pipe.x += velocityX;
+            pipe.setX(pipe.getX() + velocityX);
 
-            if(!pipe.passed && bird.x > pipe.x + pipe.width) {
-                pipe.passed = true;
+            if(!pipe.isPassed() && bird.x > pipe.getX() + pipe.getWidth()) {
+                pipe.setPassed(true);
                 score += 0.5; //0.5 because ther are 2 pipes so 0.5*2 = 1, 1 for each set up pipes
             }
 
@@ -175,10 +140,10 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     }
 
     public boolean collision(Bird a, Pipe b) {
-        return a.x < b.x + b.width && //a's top left corner doesn't reach b's top right corner
-                a.x + a.width > b.x &&  //a's top right corner passes b's top left corner
-                a.y < b.y + b.height && //a's top left corner doesn't reach b's bottom left corner
-                a.y + a.height > b.y; //a's bottom left corner passes b's top left corner
+        return a.x < b.getX() + b.getWidth() && //a's top left corner doesn't reach b's top right corner
+                a.x + a.width > b.getX() &&  //a's top right corner passes b's top left corner
+                a.y < b.getY() + b.getHeight() && //a's top left corner doesn't reach b's bottom left corner
+                a.y + a.height > b.getY(); //a's bottom left corner passes b's top left corner
     }
 
     @Override
