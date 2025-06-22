@@ -10,8 +10,10 @@ Each subfolder contains an individual Java project. These projects are not produ
 
 ### Current Projects
 
-- `calculator_javax/`: A simple calculator using Java Swing.
-- `flappybird_javax/`: A basic clone of Flappy Bird made with Java graphics.
+- `calculator`: A simple calculator using Java Swing.
+   [Tutorial](https://www.youtube.com/watch?v=jQo6n-i6wpo&t=612s&ab_channel=KennyYipCoding)
+- `flappybird`: A basic clone of Flappy Bird made with Java graphics.
+   [Tutorial](https://www.youtube.com/watch?v=Xw2MEG-FBsE&t=301s&ab_channel=KennyYipCoding)
 
 ---
 
@@ -40,7 +42,7 @@ Navigate into a project folder and compile the `.java` files manually, or import
 Example:
 
 ```bash
-cd flappybird_javax/src
+cd flappybird/src
 javac Main.java
 java Main
 ```
