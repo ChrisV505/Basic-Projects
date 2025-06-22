@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
-public class FlappyBird extends JPanel implements ActionListener {
+public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int boardWidth = 360;
     int boardHeight = 640;
 
@@ -32,15 +32,42 @@ public class FlappyBird extends JPanel implements ActionListener {
         }
     }
 
+    //pipes
+    int pipeX = boardWidth;
+    int pipeY = 0;
+    int pipeWidth = 64; //scaled by 1/6
+    int pipeHeight = 512;
+
+    class Pipe {
+        int x = pipeX;
+        int y = pipeY;
+        int width = pipeWidth;
+        int height = pipeHeight;
+        Image img;
+        boolean passed = false;
+
+        Pipe(Image img) {
+            this.img = img;
+        }
+    }
+
+
     //game logic
     Bird bird;
-    int velocityY = -6;
+    int velocityX = -4; //move pipes to the left speed (simulates bird moving right)
+    int velocityY = 0; //move bird up/down speed
+    int gravity = 1;
+
+    ArrayList<Pipe> pipes;
 
     Timer gameLoop;
+    Timer placePipesTimer;
 
     FlappyBird() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         //setBackground(Color.blue);
+        setFocusable(true);
+        addKeyListener(this);
 
         //load images
         backgroundImg = new ImageIcon(getClass().getResource("./flappybirdbg.png")).getImage();
@@ -50,11 +77,25 @@ public class FlappyBird extends JPanel implements ActionListener {
 
         //bird
         bird = new Bird(birdImg);
+        pipes = new ArrayList<>();
+
+        //place pipes timer
+        placePipesTimer = new Timer(1500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                placePipes();
+            }
+        });
 
         //game timer
         gameLoop = new Timer(1000/60, this); //1000/60 = 16.6;
         gameLoop.start();
 
+    }
+
+    public void placePipes() {
+        Pipe topPipe = new Pipe(topPipeImg);
+        pipes.add(topPipe);
     }
 
     public void paintComponent(Graphics g) {
@@ -72,7 +113,9 @@ public class FlappyBird extends JPanel implements ActionListener {
 
     public void move() {
         //bird
+        velocityY += gravity;
         bird.y += velocityY;
+        bird.y = Math.max(bird.y, 0);
     }
 
 
@@ -81,6 +124,21 @@ public class FlappyBird extends JPanel implements ActionListener {
         move();
         repaint();
     }
+
+
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            velocityY = -9;
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
 
 

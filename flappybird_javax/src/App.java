@@ -15,6 +15,7 @@ public class App {
         FlappyBird flappyBird = new FlappyBird();
         frame.add(flappyBird);
         frame.pack(); //excludes the dimensions of the title bar
+        flappyBird.requestFocus();
         frame.setVisible(true);
     }
 }
