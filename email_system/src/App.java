@@ -1,4 +1,4 @@
-//Import core dotenv classes
+//Import core dotenv class
 import io.github.cdimascio.dotenv.Dotenv;
 
 // Import Java utility properties for SMTP settings
@@ -12,7 +12,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 
-// Import Internet-specific classes to compose email
+// Import Internet-specific classes to make email
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -21,11 +21,9 @@ public class App {
         //create new Dotenv instance
         Dotenv dotenv = Dotenv.load();
 
-
-
         // Your Gmail credentials (email + generated app password)
-        final String username = dotenv.get("GMAIL_USERNAME"); //get file from .env file using DOenv import
-        final String password = dotenv.get("GMAIL_PASSWORD"); // Must be an App Password, not your regular Gmail password
+        final String username = dotenv.get("GMAIL_USERNAME"); //get file from .env file using Dotenv import
+        final String password = dotenv.get("GMAIL_PASSWORD"); // get password from .env file 
 
         // Recipient email
         final String to = "christophervalle3339@gmail.com";

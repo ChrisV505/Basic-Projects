@@ -4,7 +4,7 @@
 *.class
 
 #Ignore VScode config 
-.vscode/
+.vscode
 
 #Ignore environment files
 .env
