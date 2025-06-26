@@ -14,7 +14,7 @@ Each subfolder contains an individual Java project. These projects are not produ
    [Tutorial](https://www.youtube.com/watch?v=jQo6n-i6wpo&t=612s&ab_channel=KennyYipCoding)
 - `flappybird`: A basic clone of Flappy Bird made with Java graphics.
    [Tutorial](https://www.youtube.com/watch?v=Xw2MEG-FBsE&t=301s&ab_channel=KennyYipCoding)
-- `email_system`: Basic email sender, implementing Javax.Mail API, Javax.Activation. (Not tutorial for this one)
+- `email_system`: Basic email sender, implementing Javax.Mail API, Javax.Activation. (No tutorial for this one)
 ---
 
 ## Purpose
