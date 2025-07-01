@@ -15,6 +15,8 @@ Each subfolder contains an individual Java project. These projects are not produ
 - `flappybird`: A basic clone of Flappy Bird made with Java graphics.
    [Tutorial](https://www.youtube.com/watch?v=Xw2MEG-FBsE&t=301s&ab_channel=KennyYipCoding)
 - `email_system`: Basic email sender, implementing Javax.Mail API, Javax.Activation. (No tutorial for this one)
+- `simple_http_server`: Simple http server that sends current time of day. Utilizes ServerSocket and Socket to receive connections, receive data, and send data.
+   [WebTutorial](https://javarevisited.blogspot.com/2015/06/how-to-create-http-server-in-java-serversocket-example.html)
 ---
 
 ## Purpose
