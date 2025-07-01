@@ -1,6 +1,6 @@
 # Basic Java Projects
 
-A collection of small Java projects built by following YouTube tutorials. These projects are focused on practicing and understanding core Java concepts — including GUI, logic, and object-oriented programming.
+A collection of small Java projects built by following YouTube,website tutorials or just random small projects. These projects are focused on practicing and understanding core Java concepts — including GUI, logic, and object-oriented programming.
 
 ---
 
