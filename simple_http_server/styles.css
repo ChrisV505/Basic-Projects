@@ -1,0 +1,43 @@
+.navbar {
+  background-color: #333;
+  overflow: hidden;
+  padding: 10px 20px;
+}
+
+.navbar a {
+  color: white;
+  padding: 12px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.navbar a:hover {
+  background-color: #575757;
+  border-radius: 5px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#factButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#factDisplay {
+  margin: 100px auto;
+  text-align: center;
+  font-size: 24px;
+  max-width: 600px;
+}
