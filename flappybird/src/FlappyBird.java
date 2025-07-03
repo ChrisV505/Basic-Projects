@@ -51,7 +51,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
         pipes = new ArrayList<>();
 
         //place pipes timer
-        placePipesTimer = new Timer(1500, _ -> placePipes()); //'_' used to prevent unused warning
+        placePipesTimer = new Timer(1500, __ -> placePipes()); //'_' used to prevent unused warning
         placePipesTimer.start();
 
         //game timer
